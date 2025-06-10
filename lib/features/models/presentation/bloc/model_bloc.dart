@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'model_event.dart';
-import 'model_repo.dart';
+import '../../domain/repo/model_repo.dart';
 import 'model_state.dart';
 
 class ModelBloc extends Bloc<ModelEvent, ModelState> {

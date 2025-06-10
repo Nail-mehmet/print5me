@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:printer/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:printer/features/models/presentation/pages/start_page.dart';
 
 import '../../../home_screen.dart';
-import '../../../models/model_page.dart';
+import '../../../models/presentation/pages/model_page.dart';
 import '../../domain/models/user_model.dart';
 
 
@@ -29,22 +30,23 @@ class _NavBarState extends State<NavBar> {
     //currentUser = authCubit.currentUser;
 
     screens = [
+      StartPage(),
       HomeScreen(),
-      ModelHomePage(),
+      HomeScreen(),
       HomeScreen(),
       //ChatsListPage(),
       //ProfilePage(uid: currentUser!.uid),
     ];
 
     bucket = PageStorageBucket();
-    currentScreen = HomeScreen();
+    currentScreen = ModelHomePage();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      //backgroundColor: Theme.of(context).colorScheme.secondary,
       body: PageStorage(
         bucket: bucket,
         child: currentScreen,
@@ -63,8 +65,9 @@ class _NavBarState extends State<NavBar> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             buildNavBarItem("assets/icons/home.png", "Anasayfa", 0),
-            buildNavBarItem("assets/icons/home.png", "Gönderiler", 1),
-            buildNavBarItem("assets/icons/home.png", "Keşfet", 2),
+            buildNavBarItem("assets/icons/adverts.png", "İlanlar", 1),
+            buildNavBarItem("assets/icons/offers.png", "Teklifler", 2),
+            buildNavBarItem("assets/icons/profile.png", "Profil", 3),
 
           ],
         ),

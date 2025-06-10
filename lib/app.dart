@@ -16,7 +16,34 @@ import 'features/home_screen.dart';
 
 class MyApp extends StatelessWidget {
   final SharedPreferences prefs;
-  const MyApp({super.key, required this.prefs});
+  MyApp({super.key, required this.prefs});
+  final ThemeData appTheme = ThemeData(
+    colorScheme: ColorScheme.light(
+      surface: Color(0xFFF5F5F7),
+      primary: Color(0xFF0012b1),
+      secondary: Color(0xFFff4700),
+      tertiary: Color(0xFFE0E6ED),
+      inversePrimary: Color(0xFF6EE2F5),
+    ),
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      iconTheme: IconThemeData(color: Color(0xFF001F3F)),
+      titleTextStyle: TextStyle(
+        color: Color(0xFF001F3F),
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    iconTheme: IconThemeData(color: Color(0xFF415A77)),
+    textTheme: TextTheme(
+      bodyLarge: TextStyle(color: Color(0xFF001F3F)),
+      bodyMedium: TextStyle(color: Color(0xFF415A77)),
+    ),
+  );
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +53,7 @@ class MyApp extends StatelessWidget {
         create: (context) => AuthBloc(authRepository: context.read<AuthRepository>())..add(CheckAuthEvent()),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData.light(), // Teman neyse
+          theme: appTheme, // Teman neyse
           home: const InitialPage(), // Değişiklik burada
         ),
       ),

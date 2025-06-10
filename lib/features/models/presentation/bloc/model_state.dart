@@ -1,4 +1,4 @@
-import 'model.dart';
+import '../../domain/entity/model.dart';
 
 abstract class ModelState {}
 

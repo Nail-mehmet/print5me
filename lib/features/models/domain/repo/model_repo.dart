@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import 'model.dart';
+import '../entity/model.dart';
 
 class ModelRepository {
   final String baseUrl = 'https://myprinter.tr/db/getAllModels';
