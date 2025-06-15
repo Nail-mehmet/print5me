@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:printer/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:printer/features/models/presentation/pages/start_page.dart';
 
+import '../../../adverts/presentation/pages/adverts_page.dart';
 import '../../../home_screen.dart';
 import '../../../models/presentation/pages/model_page.dart';
 import '../../domain/models/user_model.dart';
@@ -31,7 +32,7 @@ class _NavBarState extends State<NavBar> {
 
     screens = [
       StartPage(),
-      HomeScreen(),
+      IlanlarPage(pageSize: 2,),
       HomeScreen(),
       HomeScreen(),
       //ChatsListPage(),

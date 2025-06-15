@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 
+import '../../../home_screen.dart';
 import '../components/tab_item.dart';
 import 'model_page.dart';
 
@@ -66,7 +67,7 @@ class _StartPageState extends State<StartPage> with SingleTickerProviderStateMix
         controller: _tabController,
         children: [
           ModelHomePage(),
-          ModelHomePage(),
+          HomeScreen(),
         ],
       ),
     );

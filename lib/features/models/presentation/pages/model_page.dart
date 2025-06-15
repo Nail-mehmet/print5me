@@ -5,8 +5,7 @@ import '../bloc/model_event.dart';
 import '../../domain/repo/model_repo.dart';
 import '../bloc/model_state.dart';
 import '../../domain/entity/model.dart';
-
-
+import 'model_detail_page.dart';
 
 class ModelHomePage extends StatefulWidget {
   const ModelHomePage({super.key});
@@ -44,8 +43,7 @@ class _ModelHomePageState extends State<ModelHomePage> {
 
             return Column(
               children: [
-                _buildSearchField(),
-                _buildCategoryChips(),
+                _buildSearchAndFilterRow(),
                 Expanded(
                   child: _buildContent(state),
                 ),
@@ -57,82 +55,82 @@ class _ModelHomePageState extends State<ModelHomePage> {
     );
   }
 
-  Widget _buildSearchField() {
+  Widget _buildSearchAndFilterRow() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: TextField(
-        controller: _searchController,
-        decoration: InputDecoration(
-          hintText: 'Model ara...',
-          prefixIcon: const Icon(Icons.search),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(24),
-            borderSide: BorderSide.none,
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildSearchField(),
           ),
-          filled: true,
-          fillColor: Colors.grey[200],
-          contentPadding: const EdgeInsets.symmetric(vertical: 0),
-          suffixIcon: _searchQuery.isNotEmpty
-              ? IconButton(
-            icon: const Icon(Icons.clear),
-            onPressed: () {
-              _searchController.clear();
-              setState(() {
-                _searchQuery = '';
-              });
-            },
-          )
-              : null,
-        ),
-        onChanged: (value) {
-          setState(() {
-            _searchQuery = value.toLowerCase();
-          });
-        },
+          const SizedBox(width: 8),
+          _buildCategoryDropdown(),
+        ],
       ),
     );
   }
 
-  Widget _buildCategoryChips() {
-    return SizedBox(
-      height: 50,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
-        itemBuilder: (context, index) {
-          final category = categories[index];
-          final isSelected = selectedCategory == category;
+  Widget _buildSearchField() {
+    return TextField(
+      controller: _searchController,
+      decoration: InputDecoration(
+        hintText: 'Model ara...',
+        prefixIcon: const Icon(Icons.search),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(24),
+          borderSide: BorderSide.none,
+        ),
+        filled: true,
+        fillColor: Colors.grey[200],
+        contentPadding: const EdgeInsets.symmetric(vertical: 0),
+        suffixIcon: _searchQuery.isNotEmpty
+            ? IconButton(
+          icon: const Icon(Icons.clear),
+          onPressed: () {
+            _searchController.clear();
+            setState(() {
+              _searchQuery = '';
+            });
+          },
+        )
+            : null,
+      ),
+      onChanged: (value) {
+        setState(() {
+          _searchQuery = value.toLowerCase();
+        });
+      },
+    );
+  }
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: ChoiceChip(
-              label: Text(
-                category,
-                style: TextStyle(
-                  color: isSelected ? Colors.white : Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              selected: isSelected,
-              onSelected: (selected) {
-                setState(() {
-                  selectedCategory = selected ? category : 'Tümü';
-                });
-              },
-              selectedColor: Theme.of(context).primaryColor,
-              backgroundColor: const Color(0xFFF0F4F8),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
-                side: BorderSide(
-                  color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300,
-                ),
-              ),
-              elevation: isSelected ? 4 : 0,
-              shadowColor: Colors.black26,
-              showCheckmark: false,
-            ),
-          );
+  Widget _buildCategoryDropdown() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: DropdownButton<String>(
+        value: selectedCategory,
+        icon: const Icon(Icons.arrow_drop_down),
+        iconSize: 24,
+        elevation: 16,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.secondary,
+          fontWeight: FontWeight.w500,
+        ),
+        underline: Container(),
+        onChanged: (String? newValue) {
+          setState(() {
+            selectedCategory = newValue!;
+          });
         },
+        items: categories.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
       ),
     );
   }
@@ -232,69 +230,6 @@ class _ModelHomePageState extends State<ModelHomePage> {
           ),
         );
       },
-    );
-  }
-}
-
-class ModelDetailPage extends StatelessWidget {
-  final Model model;
-
-  const ModelDetailPage({super.key, required this.model});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(model.title)),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AspectRatio(
-              aspectRatio: 16/9,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  model.pic,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>
-                  const Icon(Icons.error, size: 100),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            _buildDetailRow('Kategori', model.category),
-            _buildDetailRow('Oluşturan', model.createdBy),
-            _buildDetailRow('Etiketler', model.tags.join(", ")),
-            _buildDetailRow('Ek Bilgi', model.additional),
-            const SizedBox(height: 16),
-            const Text('URLler:', style: TextStyle(fontWeight: FontWeight.bold)),
-            ...model.url.map((url) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: SelectableText(url),
-            )).toList(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDetailRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-        SizedBox(
-        width: 100,
-        child: Text(
-            '$label:',
-            style: const TextStyle(fontWeight: FontWeight.bold)),
-        //const SizedBox(width: 8),
-        ),
-          Expanded(child: Text(value)),
-        ],
-      ),
     );
   }
 }
