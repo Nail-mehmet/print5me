@@ -61,7 +61,7 @@ class _ModelDetailPageState extends State<ModelDetailPage> {
         modelid: widget.model.modelid,
         offerIds: [],
         note: _noteController.text,
-        fileURL: widget.model.url.isNotEmpty ? widget.model.url.first : null,
+        fileURL: widget.model.url,
         pic: widget.model.pic,
       );
 

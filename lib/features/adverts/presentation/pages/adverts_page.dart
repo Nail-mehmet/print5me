@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../../domain/entities/advert_model.dart'; // Ilan sınıfın burada olmalı
+import '../../domain/entities/advert_model.dart';
+import 'adverts_detail_page.dart'; // Ilan sınıfın burada olmalı
 
 class IlanlarPage extends StatefulWidget {
   final int pageSize;
@@ -26,6 +27,8 @@ class _IlanlarPageState extends State<IlanlarPage> {
       body: jsonEncode({'pageSize': pageSize}),
       headers: {'Content-Type': 'application/json'},
     );
+    print('İlan JSON cevabı: ${response.body}');
+
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = jsonDecode(response.body);
@@ -63,39 +66,49 @@ class _IlanlarPageState extends State<IlanlarPage> {
             itemCount: ilanlar.length,
             itemBuilder: (context, index) {
               final ilan = ilanlar[index];
-              return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 7,
-                      child: ilan.pic != null
-                          ? ClipRRect(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-                        child: Image.network(ilan.pic!, fit: BoxFit.cover, width: double.infinity),
-                      )
-                          : Container(color: Colors.grey[300]),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          ilan.title,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+              return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => IlanDetailPage(ilan: ilan),
+                      ),
+                    );
+                  },
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 7,
+                        child: ilan.pic != null
+                            ? ClipRRect(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                          child: Image.network(ilan.pic!, fit: BoxFit.cover, width: double.infinity),
+                        )
+                            : Container(color: Colors.grey[300]),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            ilan.title,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text('${ilan.budget} TL', style: TextStyle(color: Colors.green)),
-                    ),
-                    SizedBox(height: 8),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text('${ilan.budget} TL', style: TextStyle(color: Colors.green)),
+                      ),
+                      SizedBox(height: 8),
+                    ],
+                  ),
                 ),
               );
             },

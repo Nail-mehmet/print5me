@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class IlanWHid {
   final String budget;
   final String createdBy;
@@ -11,7 +13,7 @@ class IlanWHid {
   final String note;
   final String? acceptedOffer;
   final String? acceptedOdeme;
-  final String? fileURL;
+  final List<String>? fileURL;
   final String? pic;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -55,6 +57,35 @@ class IlanWHid {
     'updatedAt': updatedAt.toIso8601String(),
   };
 }
+List<String> parseStringList(dynamic input) {
+  try {
+    if (input is List) {
+      return input.map((e) => e.toString()).toList();
+    } else if (input is String) {
+      final decoded = jsonDecode(input);
+      if (decoded is List) {
+        return decoded.map((e) => e.toString()).toList();
+      }
+    }
+  } catch (e) {
+  }
+  return [];
+}
+
+DateTime? parseDateTime(dynamic input) {
+  try {
+    if (input is String) {
+      return DateTime.parse(input);
+    } else if (input is Map && input.containsKey('_seconds')) {
+      return DateTime.fromMillisecondsSinceEpoch(input['_seconds'] * 1000);
+    } else if (input is Map && input.containsKey('date')) {
+      return DateTime.parse(input['date']);
+    }
+  } catch (e) {
+  }
+  return null;
+}
+
 
 class Ilan extends IlanWHid {
   final String ilanId;
@@ -74,7 +105,7 @@ class Ilan extends IlanWHid {
     required String note,
     String? acceptedOffer,
     String? acceptedOdeme,
-    String? fileURL,
+    List<String>? fileURL,
     String? pic,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -101,6 +132,14 @@ class Ilan extends IlanWHid {
   factory Ilan.fromJson(Map<String, dynamic> json) {
     return Ilan(
       ilanId: json['ilanId'],
+      fileURL: parseStringList(json['fileURL']),
+
+
+
+      pic: json['pic'],
+      createdAt: parseDateTime(json['createdAt']) ?? DateTime.now(),
+      updatedAt: parseDateTime(json['updatedAt']) ?? DateTime.now(),
+      acceptedAt: parseDateTime(json['acceptedAt']),
       budget: json['budget'],
       createdBy: json['createdBy'],
       custom: json['custom'],
@@ -109,23 +148,17 @@ class Ilan extends IlanWHid {
       support: json['support'],
       title: json['title'],
       modelid: json['modelid'],
-      offerIds: List<String>.from(json['offerIds'] ?? []),
+      offerIds: json['offerIds'] is String
+          ? List<String>.from(jsonDecode(json['offerIds']))
+          : List<String>.from(json['offerIds'] ?? []),
       note: json['note'],
       acceptedOffer: json['acceptedOffer'],
       acceptedOdeme: json['acceptedOdeme'],
-      fileURL: json['fileURL'],
-      pic: json['pic'],
-      createdAt: json['createdAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(json['createdAt'])
-          : DateTime.now(),
-      updatedAt: json['updatedAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(json['updatedAt'])
-          : DateTime.now(),
-      acceptedAt: json['acceptedAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(json['acceptedAt'])
-          : null,
     );
   }
+
+
+
 
 
   @override
