@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../../adverts/domain/entities/advert_model.dart';
+import '../../../auth/domain/repository/auth_repository.dart';
 import '../../domain/entity/model.dart';
 
 class ModelDetailPage extends StatefulWidget {
@@ -49,10 +51,25 @@ class _ModelDetailPageState extends State<ModelDetailPage> {
     setState(() => _isLoading = true);
 
     try {
-      // 1. JSON verisini elle oluştur
+      final currentUser = await AuthRepository().getCurrentUser();
+      if (currentUser == null) throw Exception('Kullanıcı oturumu açık değil.');
+
+      final idResponse = await http.post(
+        Uri.parse('https://myprinter.tr/auth'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': currentUser.email}),
+      );
+
+      if (idResponse.statusCode != 200) {
+        throw Exception('Kullanıcı ID alınamadı: ${idResponse.body}');
+      }
+
+// Düz metin olduğu için doğrudan alıyoruz
+      final String userId = idResponse.body.trim();
+
       final ilan = IlanWHid(
         budget: _budgetController.text,
-        createdBy: widget.model.createdBy,
+        createdBy: userId,  // Buraya direkt uid atıyoruz
         custom: _custom,
         filamentType: _filamentType,
         fillRate: _fillRate,
@@ -65,9 +82,8 @@ class _ModelDetailPageState extends State<ModelDetailPage> {
         pic: widget.model.pic,
       );
 
-      final wrappedJson = {
-        'ilan': ilan.toJson(),
-      };
+
+      final wrappedJson = {'ilan': ilan.toJson()};
 
       final response = await http.post(
         Uri.parse('https://myprinter.tr/db/publishAdvert'),
@@ -75,10 +91,8 @@ class _ModelDetailPageState extends State<ModelDetailPage> {
         body: jsonEncode(wrappedJson),
       );
 
-
       debugPrint('API Yanıtı: ${response.statusCode} - ${response.body}');
 
-      // 3. Yanıtı işle
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('İlan başarıyla oluşturuldu!')),
@@ -87,8 +101,6 @@ class _ModelDetailPageState extends State<ModelDetailPage> {
       } else {
         throw Exception('HTTP ${response.statusCode}: ${response.body}');
       }
-
-
     } on TimeoutException {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('İstek zaman aşımına uğradı')),
@@ -101,6 +113,8 @@ class _ModelDetailPageState extends State<ModelDetailPage> {
       setState(() => _isLoading = false);
     }
   }
+
+
 
 
 

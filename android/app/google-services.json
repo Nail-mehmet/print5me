@@ -1,0 +1,119 @@
+{
+  "project_info": {
+    "project_number": "574650636830",
+    "firebase_url": "https://chat-28bcb-default-rtdb.firebaseio.com",
+    "project_id": "chat-28bcb",
+    "storage_bucket": "chat-28bcb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574650636830:android:659ea217ec8fcee513ec0f",
+        "android_client_info": {
+          "package_name": "com.example.my_printer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574650636830-mr9t84rejp3h029esf3a0rab6todkir8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZwsbpjQfIT9D-3e7vQ5x4ocKPUS5POtM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574650636830-mr9t84rejp3h029esf3a0rab6todkir8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "574650636830-1vp8grg6ifahjq56hc6gd849e1gc8e84.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myPrinter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574650636830:android:5a91322abb8e1d5013ec0f",
+        "android_client_info": {
+          "package_name": "com.example.printer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574650636830-mr9t84rejp3h029esf3a0rab6todkir8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZwsbpjQfIT9D-3e7vQ5x4ocKPUS5POtM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574650636830-mr9t84rejp3h029esf3a0rab6todkir8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "574650636830-1vp8grg6ifahjq56hc6gd849e1gc8e84.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myPrinter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574650636830:android:c55fadbf1321ebde13ec0f",
+        "android_client_info": {
+          "package_name": "com.example.yourprinter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574650636830-mr9t84rejp3h029esf3a0rab6todkir8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZwsbpjQfIT9D-3e7vQ5x4ocKPUS5POtM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574650636830-mr9t84rejp3h029esf3a0rab6todkir8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "574650636830-1vp8grg6ifahjq56hc6gd849e1gc8e84.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myPrinter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

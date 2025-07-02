@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:printer/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:printer/features/models/presentation/pages/start_page.dart';
 
+import '../../../../demo.dart';
 import '../../../adverts/presentation/pages/adverts_page.dart';
 import '../../../home_screen.dart';
 import '../../../models/presentation/pages/model_page.dart';
+import '../../../profile/presentation/pages/profile_page.dart';
 import '../../domain/models/user_model.dart';
 
 
@@ -33,8 +35,8 @@ class _NavBarState extends State<NavBar> {
     screens = [
       StartPage(),
       IlanlarPage(pageSize: 2,),
-      HomeScreen(),
-      HomeScreen(),
+      PrinterAuthPage(),
+      ProfilePage(),
       //ChatsListPage(),
       //ProfilePage(uid: currentUser!.uid),
     ];
